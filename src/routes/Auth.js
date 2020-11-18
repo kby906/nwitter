@@ -3,8 +3,7 @@ import { authService, firebaseInstance } from "fbase";
 import React, { useState } from "react";
 
 const Auth = () => {
-    const [newAccount, setNewAccount] = useState(true);
-    const [error, setError] = useState("");
+
     const toggleAccount = () => {
         setNewAccount((previous_value) => !previous_value)
     }
