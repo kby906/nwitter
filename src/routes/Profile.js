@@ -22,7 +22,6 @@ const Profile = ({ userObj,refreshUser }) => {
         reader.onloadend = (finishedEvent) => {
             const { currentTarget: { result } } = finishedEvent;
             setProfilePic(result)
-            console.log(result)
         }
         reader.readAsDataURL(theFile)
     }
@@ -33,28 +32,23 @@ const Profile = ({ userObj,refreshUser }) => {
             userObj.displayName !== newDisplayName ||
             userObj.photoURL !== profilePic
           ) {
-            try {
-              if (userObj.photoURL !== profilePic) {
+            try {             
                 const photoURLRef = storageService
                   .ref()
                   .child(`profile/${userObj.uid}`);
                 const response = await photoURLRef.putString(profilePic, 'data_url');
                 profileURL = await response.ref.getDownloadURL();
-      
                 await userObj.updateProfile({
-                  displayName: newDisplayName,
-                  photoURL: profileURL,
-                });
-              }
-      
-              await userObj.updateProfile({
-                displayName: newDisplayName,
-              });
+                    displayName: newDisplayName,
+                    photoURL: profileURL,
+                  });
             } catch (error) {
               console.error(error.message);
             }
           }
           refreshUser();
+        //   setProfilePic("");
+        //   setNewDisplayName("");
     }
     
     return (
