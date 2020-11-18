@@ -2,12 +2,12 @@ import { authService, storageService } from "fbase";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const Profile = ({ userObj,refreshUser }) => {
+const Profile = ({ userObj, refreshUser }) => {
     const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
     const [profilePic, setProfilePic] = useState(userObj.photoURL);
     const history = useHistory();
     const onLogOutClick = () => {
-        authService.signOut()  
+        authService.signOut()
         history.push("/")
     }
     const onChange = (event) => {
@@ -27,42 +27,43 @@ const Profile = ({ userObj,refreshUser }) => {
     }
     const onSubmit = async (event) => {
         event.preventDefault();
-        let profileURL = "";    
-        if (
-            userObj.displayName !== newDisplayName ||
-            userObj.photoURL !== profilePic
-          ) {
-            try {             
+        let profileURL = "";
+        if (userObj.displayName !== newDisplayName
+            || userObj.photoURL !== profilePic) {
+            if (
+                userObj.displayName !== newDisplayName) {
+                await userObj.updateProfile({
+                    displayName: newDisplayName,
+                });
+            }
+            if (userObj.photoURL !== profilePic) {
                 const photoURLRef = storageService
-                  .ref()
-                  .child(`profile/${userObj.uid}`);
+                    .ref()
+                    .child(`profile/${userObj.uid}`);
                 const response = await photoURLRef.putString(profilePic, 'data_url');
                 profileURL = await response.ref.getDownloadURL();
                 await userObj.updateProfile({
-                    displayName: newDisplayName,
                     photoURL: profileURL,
-                  });
-            } catch (error) {
-              console.error(error.message);
+                });
             }
-          }
-          refreshUser();
-        //   setProfilePic("");
-        //   setNewDisplayName("");
+            refreshUser();
+            // setProfilePic(userObj.photoURL);
+            // setNewDisplayName(userObj.displayName);
+        }
     }
-    
+
     return (
         <>
-        <div>
-            <h4>{userObj.displayName}</h4>
-            <img src={userObj.photoURL} width="60px" height="60px"alt="" ></img>
-        </div>
+            <div>
+                <h4>{userObj.displayName}</h4>
+                <img src={userObj.photoURL} width="60px" height="60px" alt="" ></img>
+            </div>
             <form onSubmit={onSubmit}>
                 <input onChange={onChange}
-                    type="text" placeholder="New Profile Name" 
-                    value={newDisplayName}/>
+                    type="text" placeholder="New Profile Name"
+                    value={newDisplayName} />
                 <input type="file" accept="/image*" onChange={onFileChange} />
-                {profilePic && <img src={profilePic} width="50px" height="50px" alt=""/>}
+                {profilePic && <img src={profilePic} width="50px" height="50px" alt="" />}
                 <input type="submit" />
             </form>
             <button onClick={onLogOutClick}>Log Out</button>
