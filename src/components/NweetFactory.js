@@ -42,19 +42,22 @@ const NweetFactory = ({ userObj }) => {
     }
     const onClearAttachmentClick = () => setAttachment("");
     return (
-        <form onSubmit={onSubmit}>
-            <input
-                value={nweet}
-                onChange={onChange}
-                type="text"
-                placeholder="What's on your mind?"
-                maxLength={120} />
-            <input type="file" accept="image/*" onChange={onFileChange} />
-            <input type="submit" value="Nweet" />
-            {attachment &&
-                <div><img src={attachment} width="50px" height="50px" alt="" />
-                    <button onClick={onClearAttachmentClick}>Clear Picture</button></div>}
-        </form>
+        <div className="nweetfact" id="nweetfact">
+            <form onSubmit={onSubmit} >
+                <input
+                    id="nweetinput"
+                    value={nweet}
+                    onChange={onChange}
+                    type="text"
+                    placeholder="WHAT'S ON YOUR MIND?"
+                    maxLength={120} />
+                <input id="filesubmit" type="file" accept="image/*" onChange={onFileChange} />
+                <input id="nweetsubmit" type="submit" value="Nweet" />
+                {attachment &&
+                    <div><img src={attachment} width="50px" height="50px" alt="" />
+                        <button onClick={onClearAttachmentClick}>Clear Picture</button></div>}
+            </form>
+        </div>
     )
 }
 

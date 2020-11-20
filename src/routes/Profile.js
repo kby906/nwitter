@@ -54,19 +54,23 @@ const Profile = ({ userObj, refreshUser }) => {
 
     return (
         <>
-            <div>
+            <div className="profilebox">
+                <h3>USER NAME</h3>
                 <h4>{userObj.displayName}</h4>
+                <h3>PROFILE PICTURE</h3>
                 <img src={userObj.photoURL} width="60px" height="60px" alt="" ></img>
             </div>
-            <form onSubmit={onSubmit}>
-                <input onChange={onChange}
+            <div className="container">
+            <form className="profileform" id="profileform" sonSubmit={onSubmit} >
+            {profilePic && <img src={profilePic} width="50px" height="50px" alt="" />}
+                <input id="profilename" onChange={onChange}
                     type="text" placeholder="New Profile Name"
                     value={newDisplayName} />
-                <input type="file" accept="/image*" onChange={onFileChange} />
-                {profilePic && <img src={profilePic} width="50px" height="50px" alt="" />}
-                <input type="submit" />
+                <input id="profilepicture" type="file" accept="/image*" onChange={onFileChange} />
+                <input id="profilesubmit" type="submit" />
             </form>
-            <button onClick={onLogOutClick}>Log Out</button>
+            <button id="logout" onClick={onLogOutClick}>Log Out</button>
+            </div>
         </>)
 };
 

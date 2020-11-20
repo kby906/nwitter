@@ -1,7 +1,7 @@
 import { dbService, storageService } from "fbase";
 import React, { useState } from "react";
 
-const Nweet = ({ nweetObj, isOwner , attachmentURL }) => {
+const Nweet = ({ nweetObj, isOwner, userObj}) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text)
     const onDeleteClick = async () => {
@@ -30,7 +30,7 @@ const Nweet = ({ nweetObj, isOwner , attachmentURL }) => {
             {
                 editing ?
                     (<>
-                        {isOwner && <><form onSubmit={onSubmit}>
+                        {isOwner && <><form className="container" onSubmit={onSubmit}>
                             <input onChange={onChange}
                                 type="text" placeholder="edit your nweet"
                                 value={newNweet} required />
@@ -38,15 +38,15 @@ const Nweet = ({ nweetObj, isOwner , attachmentURL }) => {
                         <button onClick={toggleEditing}>Cancel</button></>}
                     </>)
                     :
-                    <>
-                        <h4>{nweetObj.text}</h4>
+                    <div className="nweetField">
+                        <h4 id="nweet">{nweetObj.text}</h4>
                         {nweetObj.attachmentURL && <img src={nweetObj.attachmentURL} width="50px" height="50px" alt=""/>}
                         {isOwner && (
-                            <>
+                            <div className="nweetBtn">
                                 <button onClick={toggleEditing}>Edit Nweet</button>
                                 <button onClick={onDeleteClick}>Delete Nweet</button>
-                            </>)}
-                    </>
+                            </div>)}
+                    </div>
 
             }
         </div>
